@@ -17,10 +17,14 @@ app.set('views', 'server/views');
 
 
 // EXERCÍCIO 2
-// definir rota para página inicial --> renderizar a view index, usando os
+// Rota para página inicial --> view index renderizada, usando os
 // dados do banco de dados "data/jogadores.json" com a lista de jogadores
-// dica: o handler desta função é bem simples - basta passar para o template
-//       os dados do arquivo data/jogadores.json
+
+app.get('/', function(request, response) {
+  response.render('index', {
+    jogadores: db.jogadores
+  });
+});
 
 // EXERCÍCIO 3
 // definir rota para página de detalhes de um jogador --> renderizar a view
