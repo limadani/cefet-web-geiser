@@ -1,15 +1,19 @@
 var express = require('express'),
     app = express();
 
-// carregar "banco de dados" (data/jogadores.json e data/jogosPorJogador.json)
-// você pode colocar o conteúdo dos arquivos json no objeto "db" logo abaixo
-// dica: 3-4 linhas de código (você deve usar o módulo de filesystem (fs))
+var fs  = require('fs');
+var hbs = require('hbs');
+var _   = require('underscore');
+
+// carregando "banco de dados" (data/jogadores.json e data/jogosPorJogador.json)
 var db = {
+  jogadores: JSON.parse(fs.readFileSync('server/data/jogadores.json')).players,
+  jogosPorJogador: JSON.parse(fs.readFileSync('server/data/jogosPorJogador.json'))
 };
 
-
-// configurar qual templating engine usar. Sugestão: hbs (handlebars)
-//app.set('view engine', '???');
+// configuração de templating engine hbs (handlebars)
+app.set('view engine', 'hbs');
+app.set('views', 'server/views');
 
 
 // EXERCÍCIO 2
@@ -26,8 +30,10 @@ var db = {
 
 
 // EXERCÍCIO 1
-// configurar para servir os arquivos estáticos da pasta "client"
-// dica: 1 linha de código
-
-// abrir servidor na porta 3000
-// dica: 1-3 linhas de código
+// configuração para servir os arquivos estáticos da pasta "client"
+app.use(express.static('client'));
+// abertura do servidor na porta 3000
+app.set('port', (process.env.PORT || 3000));
+app.listen(app.get('port'), function() {
+  console.log('Node app is running on port', app.get('port'));
+});
