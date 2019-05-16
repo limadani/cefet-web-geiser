@@ -1,7 +1,7 @@
 /*_____________________________________________________
 Centro Federal de Educação Tecnológica de Minas Gerais
 Programação WEB: Geiser - Um registrador de jogos
-Alunas: Daniele de Souza Lima
+Aluna: Daniele de Souza Lima
 _____________________________________________________*/
 
 var express = require('express'),
