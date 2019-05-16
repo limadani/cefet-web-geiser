@@ -27,11 +27,30 @@ app.get('/', function(request, response) {
 });
 
 // EXERCÍCIO 3
-// definir rota para página de detalhes de um jogador --> renderizar a view
-// jogador, usando os dados do banco de dados "data/jogadores.json" e
+// Rota para página de detalhes de um jogador --> view ogador renderizada, 
+// usando os dados do banco de dados "data/jogadores.json" e
 // "data/jogosPorJogador.json", assim como alguns campos calculados
-// dica: o handler desta função pode chegar a ter umas 15 linhas de código
+app.get('/jogador/:id', function(request, response) {
+  var jogador = _.findWhere(db.jogadores, {steamid: request.params.id});
+  var jogJogador = db.jogosPorJogador[request.params.id];
+  var jogosTodosJogador = jogJogador.games;
+  jogador.qntJogos = jogJogador.game_count;
+  var naoJogados = _.where(jogosTodosJogador, { playtime_forever: 0 })
+  jogador.qntNJogados = naoJogados.length;
 
+  jogosTodosJogador.forEach(function(jogo){
+    jogo.playtimeHours = Math.ceil(jogo.playtime_forever/60);
+  })
+
+  var melhores = _.sortBy(jogosTodosJogador, function(jogo){
+      return -jogo.playtime_forever;
+  });
+
+  jogador.principal = _.first(melhores, 1)[0];
+  jogador.top5 = _.first(melhores, 5);
+
+  response.render('jogador', {jogador});
+});
 
 // EXERCÍCIO 1
 // configuração para servir os arquivos estáticos da pasta "client"
